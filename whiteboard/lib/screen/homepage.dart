@@ -95,11 +95,21 @@ class _MyHomePageState extends State<MyHomePage> with Responsive {
             Positioned(
               bottom: 16.0,
               right: 16.0,
-              child: FloatingActionButton(
+              child:
+                  // FloatingActionButton(
+                  //   onPressed: () {
+                  //     setState(() {
+                  //       data.add(data.length + 1);
+                  //     });
+                  //   },
+                  //   child: const Icon(Icons.add),
+                  // ),
+                  FloatingActionButton(
                 onPressed: () {
-                  setState(() {
-                    data.add(data.length + 1);
-                  });
+                  // Navigator.of(context).push(MaterialPageRoute(
+                  //     builder: (context) => EditPage(
+                  //           onNoteCreated: onNoteCreated,
+                  //         )));
                 },
                 child: const Icon(Icons.add),
               ),
