@@ -33,6 +33,7 @@ class _CreateNotePageState extends State<CreateNotePage> {
                 border: InputBorder.none,
                 hintText: "標題"
               ),
+              onChanged: (value) => setState((){}),
             ),
             const SizedBox(height: 10,),
             const Divider(thickness: 1,),
