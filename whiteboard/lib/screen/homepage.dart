@@ -2,9 +2,9 @@ import 'package:flutter/services.dart';
 import 'package:reorderable_grid_view/reorderable_grid_view.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_neumorphic_null_safety/flutter_neumorphic.dart';
-
+import './editpage.dart';
 import '../rwd/responsive.dart';
-
+import '../model/model.dart';
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
 
@@ -22,7 +22,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> with Responsive {
-  final data = [1, 2, 3, 4, 5, 6];
+  // final data = [1, 2, 3, 4, 5, 6];
+    List<Note> notes = List.empty(growable: true);
+
   late Responsive responsive;
   @override
   Widget build(BuildContext context) {
@@ -75,18 +77,11 @@ class _MyHomePageState extends State<MyHomePage> with Responsive {
                       crossAxisCount: Responsive.isMobile(context) ? 2 : 3,
                       onReorder: (oldIndex, newIndex) {
                         setState(() {
-                          final element = data.removeAt(oldIndex);
-                          data.insert(newIndex, element);
+                          final element = notes.removeAt(oldIndex);
+                          notes.insert(newIndex, element);
                         });
                       },
-                      // footer: const [
-                      //   Card(
-                      //     child: Center(
-                      //       child: Icon(Icons.add),
-                      //     ),
-                      //   ),
-                      // ],
-                      children: data.map((e) => buildItem("$e")).toList(),
+                      children: notes.map((e) => buildItem("$e")).toList(),
                     ),
                   ),
                 ),
@@ -95,21 +90,12 @@ class _MyHomePageState extends State<MyHomePage> with Responsive {
             Positioned(
               bottom: 16.0,
               right: 16.0,
-              child:
-                  // FloatingActionButton(
-                  //   onPressed: () {
-                  //     setState(() {
-                  //       data.add(data.length + 1);
-                  //     });
-                  //   },
-                  //   child: const Icon(Icons.add),
-                  // ),
-                  FloatingActionButton(
+              child:FloatingActionButton(
                 onPressed: () {
-                  // Navigator.of(context).push(MaterialPageRoute(
-                  //     builder: (context) => EditPage(
-                  //           onNoteCreated: onNoteCreated,
-                  //         )));
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => CreateNotePage(
+                            onNoteCreated: onNoteCreated,
+                          )));
                 },
                 child: const Icon(Icons.add),
               ),
@@ -139,6 +125,15 @@ class _MyHomePageState extends State<MyHomePage> with Responsive {
             child: drawerContent(context)),
       ),
     );
+  }
+    void onNoteCreated(Note note){
+    notes.add(note);
+    setState(() {});
+  }
+
+  void onNoteDeleted(int index){
+    notes.removeAt(index);
+    setState(() {});
   }
 }
 
@@ -312,6 +307,8 @@ drawerContent(BuildContext context) {
       },
     ),
   ]);
+
+  
 }
 
 class DrawerItem extends StatelessWidget {
