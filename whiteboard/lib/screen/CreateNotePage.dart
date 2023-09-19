@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import '../model/model.dart';
 class CreateNotePage extends StatefulWidget {
-  const CreateNotePage({super.key,required this.onNoteCreated, });
+  const CreateNotePage({super.key, required this.onNoteCreated, });
   final Function(Note) onNoteCreated;
 
   @override
+  // ignore: library_private_types_in_public_api
   _CreateNotePageState createState() => _CreateNotePageState();
 }
 

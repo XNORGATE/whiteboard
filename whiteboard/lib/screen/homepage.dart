@@ -2,9 +2,11 @@ import 'package:flutter/services.dart';
 import 'package:reorderable_grid_view/reorderable_grid_view.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_neumorphic_null_safety/flutter_neumorphic.dart';
-import './editpage.dart';
 import '../rwd/responsive.dart';
 import '../model/model.dart';
+import 'CreateNotePage.dart';
+import 'note_view.dart';
+
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
 
@@ -18,26 +20,58 @@ class MyHomePage extends StatefulWidget {
   // always marked "final".
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<MyHomePage> createState() => MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> with Responsive {
+class MyHomePageState extends State<MyHomePage> with Responsive {
   // final data = [1, 2, 3, 4, 5, 6];
-    List<Note> notes = List.empty(growable: true);
+  List<Note> notes = List.empty(growable: true);
 
   late Responsive responsive;
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
-    Widget buildItem(String text) {
+    Widget buildItem(Note note) {
       return Card(
-        key: ValueKey(text),
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(10.0)),
-        ),
-        child: Text(text),
-      );
+          key: ValueKey(note.title),
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+          ),
+          child: InkWell(
+            onTap: () {
+              print(notes.length);
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => NoteView(
+                        note: note,
+                        index: notes.indexOf(note),
+                        onNoteDeleted: onNoteDeleted,
+                        onNoteUpdated: onNoteUpdated,
+                      )));
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Column(
+                children: [
+                  Text(
+                    note.title,
+                    style: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  const Divider(
+                    thickness: 1,
+                  ),
+                  Text(
+                    note.body,
+                    style: const TextStyle(fontSize: 18),
+                  ),
+                ],
+              ),
+            ),
+          ));
     }
 
     return Scaffold(
@@ -81,7 +115,7 @@ class _MyHomePageState extends State<MyHomePage> with Responsive {
                           notes.insert(newIndex, element);
                         });
                       },
-                      children: notes.map((e) => buildItem("$e")).toList(),
+                      children: notes.map((note) => buildItem(note)).toList(),
                     ),
                   ),
                 ),
@@ -90,7 +124,7 @@ class _MyHomePageState extends State<MyHomePage> with Responsive {
             Positioned(
               bottom: 16.0,
               right: 16.0,
-              child:FloatingActionButton(
+              child: FloatingActionButton(
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => CreateNotePage(
@@ -126,12 +160,18 @@ class _MyHomePageState extends State<MyHomePage> with Responsive {
       ),
     );
   }
-    void onNoteCreated(Note note){
+
+  void onNoteCreated(Note note) {
     notes.add(note);
     setState(() {});
   }
 
-  void onNoteDeleted(int index){
+  void onNoteUpdated(int index, Note newNote) {
+    notes[index] = newNote;
+    setState(() {});
+  }
+
+  void onNoteDeleted(int index) {
     notes.removeAt(index);
     setState(() {});
   }
@@ -307,8 +347,6 @@ drawerContent(BuildContext context) {
       },
     ),
   ]);
-
-  
 }
 
 class DrawerItem extends StatelessWidget {
