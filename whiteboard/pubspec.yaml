@@ -42,7 +42,8 @@ dependencies:
   neumorphic: ^0.4.0
   font_awesome_flutter: ^10.4.0
   flutter_neumorphic_null_safety: ^3.2.4
-
+  davinci: ^2.1.1
+  home_widget: any
 
 dev_dependencies:
   flutter_test:

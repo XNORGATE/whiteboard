@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_neumorphic_null_safety/flutter_neumorphic.dart';
 import '../rwd/responsive.dart';
 import '../model/model.dart';
+import '../screen_widget/home_widget_config.dart';
 import 'CreateNotePage.dart';
 import 'note_view.dart';
 
@@ -28,6 +29,47 @@ class MyHomePageState extends State<MyHomePage> with Responsive {
   List<Note> notes = List.empty(growable: true);
 
   late Responsive responsive;
+  Widget homeScreenWidget(Note note) {
+    return Card(
+      key: ValueKey(note.title),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Column(
+          children: [
+            Text(
+              note.title,
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            const Divider(
+              thickness: 1,
+            ),
+            Text(
+              note.body,
+              style: const TextStyle(fontSize: 18),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      HomeWidgetConfig.initialize().then((value) async {
+        HomeWidgetConfig.update(context, homeScreenWidget(notes[0]));
+        setState(() {});
+      });
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
