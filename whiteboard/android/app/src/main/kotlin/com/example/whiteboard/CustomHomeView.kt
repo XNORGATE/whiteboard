@@ -1,4 +1,4 @@
-package com.example.home_widget_demo
+package com.example.whiteboard
 
 import android.appwidget.AppWidgetManager
 import android.content.Context

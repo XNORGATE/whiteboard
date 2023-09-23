@@ -1,12 +1,14 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:reorderable_grid_view/reorderable_grid_view.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:flutter_neumorphic_null_safety/flutter_neumorphic.dart';
+// import 'package:flutter_neumorphic_null_safety/flutter_neumorphic.dart';
 import '../rwd/responsive.dart';
 import '../model/model.dart';
 import '../screen_widget/home_widget_config.dart';
 import 'CreateNotePage.dart';
 import 'note_view.dart';
+import 'dart:io' show Platform;
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -26,7 +28,10 @@ class MyHomePage extends StatefulWidget {
 
 class MyHomePageState extends State<MyHomePage> with Responsive {
   // final data = [1, 2, 3, 4, 5, 6];
-  List<Note> notes = List.empty(growable: true);
+  // List<Note> notes = List.empty(growable: true);
+  List<Note> notes = [
+    const Note(title: 'My First Note', body: 'This is my first note.')
+  ];
 
   late Responsive responsive;
   Widget homeScreenWidget(Note note) {
@@ -62,10 +67,12 @@ class MyHomePageState extends State<MyHomePage> with Responsive {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      HomeWidgetConfig.initialize().then((value) async {
-        HomeWidgetConfig.update(context, homeScreenWidget(notes[0]));
-        setState(() {});
-      });
+      if (Platform.isAndroid || Platform.isIOS) {
+        HomeWidgetConfig.initialize().then((value) async {
+          HomeWidgetConfig.update(context, homeScreenWidget(notes[0]));
+          setState(() {});
+        });
+      }
     });
     super.initState();
   }
@@ -246,8 +253,8 @@ drawerContent(BuildContext context) {
         const SizedBox(
           height: 30,
         ),
-        Row(
-          children: const [
+        const Row(
+          children: [
             UserAvatar(
               filename: 'google.png',
             ),
@@ -369,11 +376,11 @@ drawerContent(BuildContext context) {
             ),
             content: const Text('確定要登出 ?'),
             actions: [
-              NeumorphicButton(
+              TextButton(
                 onPressed: () => Navigator.pop(context, false),
                 child: const Text('取消'),
               ),
-              NeumorphicButton(
+              TextButton(
                 onPressed: () => Navigator.pop(context, true),
                 child: const Text('確認'),
               ),

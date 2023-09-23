@@ -4,8 +4,9 @@ import 'dart:typed_data';
 import 'package:davinci/davinci.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:home_widget/home_widget.dart';
-import 'strings.dart';
 import 'package:path_provider/path_provider.dart';
+import 'strings.dart';
+// import 'package:path_provider/path_provider.dart';
 
 class HomeWidgetConfig {
   static Future<void> update(context, Widget widget) async {

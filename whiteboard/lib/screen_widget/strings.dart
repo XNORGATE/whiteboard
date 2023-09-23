@@ -1,4 +1,4 @@
-String groupId = 'group.home_widget_demo_group';
-String iosWidget = 'home_widget_demo';
+String groupId = 'group.home_widget_group';
+String iosWidget = 'home_widget';
 String androidWidget = 'CustomHomeView';
-String key = 'OPEN_WEATHER_API_KEY';
+// String key = 'OPEN_WEATHER_API_KEY';
